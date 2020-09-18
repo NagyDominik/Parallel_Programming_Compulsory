@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Parallel_Programming_Compulsory
@@ -9,12 +11,11 @@ namespace Parallel_Programming_Compulsory
     {
         public List<long> GetPrimesSequential(long first, long last)
         {
-            last = Int32.MaxValue - 1;
             List<long> resultList = new List<long>();
             BitArray bits = new BitArray((int)last + 1, true); // All true
             bits[0] = false;
             bits[1] = false;
-            for (long i = first; i * i <= last; i++) // Loops until the square root of the last number
+            for (long i = 1; i * i <= last; i++) // Loops until the square root of the last number
             {
                 if (bits[(int)i])
                 {
@@ -33,7 +34,7 @@ namespace Parallel_Programming_Compulsory
                 }
             }
 
-            return resultList;
+            return resultList.Skip((int)first).ToList();
         }
     }
 }
