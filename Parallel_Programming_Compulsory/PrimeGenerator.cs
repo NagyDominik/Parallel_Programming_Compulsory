@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Parallel_Programming_Compulsory
 {
-    public class GetPrimesSequential
+    public class PrimeGenerator
     {
-        private static List<long> GetPrimeSequential(long first, long last)
+        public List<long> GetPrimesSequential(long first, long last)
         {
             long num;
             int i, counter;
