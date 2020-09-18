@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Parallel_Programming_Compulsory
 {
@@ -34,6 +35,53 @@ namespace Parallel_Programming_Compulsory
                 }
             }
 
+            return resultList.Skip((int)first).ToList();
+        }
+
+        public  List<long> GetPrimesParallel(long first, long last)
+        {
+            SemaphoreSlim s = new SemaphoreSlim(1, 1);
+            List<long> resultList = new List<long>();
+            BitArray bits = new BitArray((int)last + 1, true); // All true
+            bits[0] = false;
+            bits[1] = false;
+
+            
+            for (int i = 1; i * i <= last; i++) // Loops until the square root of the last number
+            {
+                if (bits[(int)i])
+                {
+
+                    //for (long j = i * i; j <= last; j += i) // Removes all the products of the current number.
+                    //{
+                    //    bits[(int)j] = false;
+                    //}
+                    
+                    Parallel.ForEach(Partitioner.Create(i, last), (range) =>
+                    {
+                        for (long j = range.Item1* range.Item1; j <= range.Item2; j += range.Item1) // Removes all the products of the current number.
+                        {
+                            bits[(int)j] = false;
+                        }
+                    });
+                }
+            }
+
+            Parallel.ForEach(Partitioner.Create(0, bits.Length), range =>
+            {
+                s.Wait();
+                for (int i = range.Item1; i < range.Item2; i++)
+                {
+                    if (bits[i])
+                    {
+                        resultList.Add(i);
+                    }
+                }
+
+                s.Release();
+            });
+
+            resultList.Sort();
             return resultList.Skip((int)first).ToList();
         }
     }

@@ -55,6 +55,24 @@ namespace Parallel_Programming_Compulsory
 
         public async void StartParallel(object sender, RoutedEventArgs e)
         {
+            {
+                ParseFields(out long start, out long end);
+
+                ChangeStatusText("Generating...");
+                stopwatch.Start();
+                Task gen = Task.Factory.StartNew(() =>
+                {
+                    return generator.GetPrimesParallel(start, end);
+                }).ContinueWith((task) =>
+                {
+                    dataSource = new ObservableCollection<long>(task.Result);
+                });
+                await gen;
+                stopwatch.Stop();
+                listboxResult.ItemsSource = dataSource;
+                ChangeStatusText(string.Format("Runtime: {0} sec", stopwatch.ElapsedMilliseconds / 1000d));
+                stopwatch.Reset();
+            }
         }
 
         private void ChangeStatusText(string text)
