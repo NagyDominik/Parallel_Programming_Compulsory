@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,27 +9,30 @@ namespace Parallel_Programming_Compulsory
     {
         public List<long> GetPrimesSequential(long first, long last)
         {
-            long num;
-            int i, counter;
-
+            last = Int32.MaxValue - 1;
             List<long> resultList = new List<long>();
-
-            for (num = first; num <= last; num++)
+            BitArray bits = new BitArray((int)last + 1, true); // All true
+            bits[0] = false;
+            bits[1] = false;
+            for (long i = first; i * i <= last; i++) // Loops until the square root of the last number
             {
-                counter = 0;
-
-                for (i = 2; i <= num / 2; i++)
+                if (bits[(int)i])
                 {
-                    if (num % i == 0)
+                    for (long j = i * i; j <= last; j += i) // Removes all the products of the current number.
                     {
-                        counter++;
-                        break;
+                        bits[(int)j] = false;
                     }
                 }
-
-                if (counter == 0 && num != 1)
-                    resultList.Add(num);
             }
+
+            for (int i = 0; i < bits.Length; i++) // BitArray to List<long>
+            {
+                if (bits[i])
+                {
+                    resultList.Add(i);
+                }
+            }
+
             return resultList;
         }
     }

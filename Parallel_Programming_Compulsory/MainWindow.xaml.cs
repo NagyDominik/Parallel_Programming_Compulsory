@@ -35,18 +35,7 @@ namespace Parallel_Programming_Compulsory
 
         public async void StartSequential(object sender, RoutedEventArgs e)
         {
-            long start;
-            long end;
-            if (!long.TryParse(fieldStart.Text, out start))
-            {
-                MessageBox.Show("Range start is not a number!");
-                return;
-            }
-            if (!long.TryParse(fieldEnd.Text, out end))
-            {
-                MessageBox.Show("Range end is not a number!");
-                return;
-            }
+            ParseFields(out long start, out long end);
 
             ChangeStatusText("Generating...");
             stopwatch.Start();
@@ -71,6 +60,19 @@ namespace Parallel_Programming_Compulsory
         private void ChangeStatusText(string text)
         {
             lblStatus.Content = text;
+        }
+
+        private void ParseFields(out long start, out long end)
+        {
+            if (!long.TryParse(fieldStart.Text, out start))
+            {
+                MessageBox.Show("Range start is not a number!");
+            }
+            if (!long.TryParse(fieldEnd.Text, out end))
+            {
+                MessageBox.Show("Range end is not a number!");
+            }
+            return;
         }
     }
 }
