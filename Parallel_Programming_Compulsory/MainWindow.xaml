@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Parallel_Programming_Compulsory"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Prime Generator" Height="450" Width="440">
     <Grid>
-
+        <TextBox HorizontalAlignment="Left" Height="22" Margin="30,40,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" x:Name="fieldStart" />
+        <TextBox HorizontalAlignment="Right" Height="22" Margin="0,40,30,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" x:Name="fieldEnd" />
+        <ListBox Margin="30,80,30,50" x:Name="listboxResult" />
+        <Label Content="Range start" HorizontalAlignment="Left" Margin="30,15,0,0" VerticalAlignment="Top" Width="84" />
+        <Label Content="Range end" Margin="0,15,90,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="84" />
+        <Label Content="Status: " HorizontalAlignment="Left" Margin="30,0,0,15" Width="45" Height="25" VerticalAlignment="Bottom" />
+        <Label Content="" HorizontalAlignment="Left" Margin="80,0,0,15" Width="130" Height="25" VerticalAlignment="Bottom" x:Name="lblStatus" />
+        <Button Content="Start Parallel" Margin="0,0,130,15" x:Name="btnStartSeq" Click="StartParallel" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="95" />
+        <Button Content="Start Sequential" Margin="0,0,30,15" x:Name="btnStartParal" Click="StartSequential" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="95" />
     </Grid>
 </Window>
