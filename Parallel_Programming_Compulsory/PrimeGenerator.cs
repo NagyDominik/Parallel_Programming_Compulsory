@@ -51,40 +51,27 @@ namespace Parallel_Programming_Compulsory
                 {
                     Parallel.ForEach(Partitioner.Create(i, last), (range) =>
                     {
-                        lock (bits)
+                        BitArray temp = new BitArray((int)last + 1, true);
+                        for (long j = range.Item1 * range.Item1; j <= last; j += range.Item1) // Removes all the products of the current number.
                         {
-                            for (long j = range.Item1 * range.Item1; j <= last; j += range.Item1) // Removes all the products of the current number.
-                            {
-                                bits[(int)j] = false;
-                            }
+                            temp[(int)j] = false;
+                        }
+                        lock (this)
+                        {
+                            bits.And(temp);
                         }
                     });
                 }
             }
 
-            Parallel.ForEach(Partitioner.Create(0, bits.Length), range =>
+            for (int i = 0; i < bits.Length; i++) // BitArray to List<long>
             {
-                lock (resultList)
+                if (bits[i])
                 {
-                    for (int i = range.Item1; i < range.Item2; i++)
-                    {
-                        if (bits[i])
-                        {
-                            resultList.Add(i);
-                        }
-                    }
+                    resultList.Add(i);
                 }
-            });
+            }
 
-            //for (int i = 0; i < bits.Length; i++) // BitArray to List<long>
-            //{
-            //    if (bits[i])
-            //    {
-            //        resultList.Add(i);
-            //    }
-            //}
-
-            resultList.Sort();
             return resultList.Skip((int)first).ToList();
         }
     }
