@@ -35,7 +35,7 @@ namespace Parallel_Programming_Compulsory
                 }
             }
 
-            return resultList.Skip((int)first).ToList();
+            return resultList.Where(x => x >= first).ToList();
         }
 
         public List<long> GetPrimesParallel(long first, long last)
@@ -72,7 +72,7 @@ namespace Parallel_Programming_Compulsory
                 }
             }
 
-            return resultList.Skip((int)first).ToList();
+            return resultList.Where(x => x >= first).ToList();
         }
     }
 }
